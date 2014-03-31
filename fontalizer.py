@@ -27,10 +27,9 @@ def getcolors(im):
   palette = {}
   colors = im.getcolors()
   for color in colors:
+    # No support for alpha channels, just drop them
     if color[1][3] == 255:
       palette[t2h(color[1])] = [0] * im.size[0]
-    else:
-      print "There is currently no support for alpha channels, convert them first. [%s]" % ','.join(str(e) for e in color[1])
   return palette
 
 def parseImage(file, idx):
