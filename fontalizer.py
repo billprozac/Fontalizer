@@ -18,7 +18,7 @@ class Glyph:
     output = "STARTCHAR %03d\n" % idx
     output += "ENCODING %d\n" % idx
     output += "SWIDTH 1008\n"
-    output += "DWIDTH %d\n" % self.width
+    output += "DWIDTH %d 0\n" % self.width
     output += "BBX %d %d 0 0\n" % (self.width, self.height)
     output += "BITMAP\n"
     return output
