@@ -4,11 +4,13 @@ import Image
 import sys, argparse
 
 class Glyph:
-  def __init__(self, sourcefile, idx=1, alpha=255):
+  def __init__(self, sourcefile, idx=1, alpha=255, binary=False, mask=None):
     self.sourcefile = sourcefile
     self.height = 0
     self.width  = 0
     self.alpha = alpha
+    self.binary = binary
+    self.mask = mask
     self.index  = idx
     self.layers = {}  # Colors
     self.padding= 0
@@ -36,13 +38,19 @@ class Glyph:
     for color in colors:
       # No support for alpha channels, just drop them
       if color[1][3] >= self.alpha:
-        self.layers[self.t2h(color[1])] = [0] * self.image.size[0]
+        c = self.t2h(color[1])
+        if c[1:] != self.mask:
+          self.layers[c] = [0] * self.image.size[0]
       else:
         print "Unsupported Alpha color: %s" % (color, )
 
   def parseImage(self):
     print "Reading image %s..." % self.sourcefile
     self.image = Image.open(self.sourcefile)
+    if self.binary:
+      bg = Image.new('RGB', self.image.size, (255,255,255))
+      bg.paste(self.image, mask=self.image.split()[3])
+      self.image = bg.convert('1').convert('RGBA')
     if self.image.mode == 'P':
       self.image = self.image.convert('RGBA')
     self.height,self.width = self.image.size
@@ -57,7 +65,8 @@ class Glyph:
       while x < self.width:
         c = self.t2h(pix[x,y])
         if c:
-          self.layers[c][y] += (1 << ((self.padding * 4)-x-1))
+          if c in self.layers:
+            self.layers[c][y] += (1 << ((self.padding * 4)-x-1))
         x+= 1
       x = 0
       y += 1
@@ -97,6 +106,7 @@ if __name__ == '__main__':
   parser.add_argument('-o','--output', help='Output BDFR font file', required=False, default="font.bdf")
   parser.add_argument('-i','--index', help='Starting char number', type=int, required=False, default=1)
   parser.add_argument('-a','--alpha', help='Alpha threshold', type=int, required=False, default=255)
+  parser.add_argument('-b','--binary', help='Convert images to b/w before processing', type=bool, required=False, default=0)
   parser.add_argument('-H','--height', help='Total font height.  If an image is larger, this value will be overwritten', type=int, required=False, default=0)
   parser.add_argument('-W','--width', help='Total font width.  If an image is larger, this value will be overwritten', type=int, required=False, default=0)
   parser.add_argument('-c','--color', help='Color to be used as background in hex 000000 - FFFFFF', required=False, default=None)
@@ -110,7 +120,7 @@ if __name__ == '__main__':
   glyphs = []
   if len(args['files']) > 0:
     for file in args['files']:
-      g = Glyph(file, idx, args['alpha'])
+      g = Glyph(file, idx, args['alpha'], args['binary'], args['color'])
       glyphs.append(g)
       idx += len(g.layers)
       if g.width > w: w = g.width
