@@ -1,0 +1,162 @@
+STARTFONT 2.1
+FONT UserFont
+SIZE 16 96 96
+FONTBOUNDINGBOX 16 16 0 0
+STARTPROPERTIES 2
+FONT_ASCENT 16
+FONT_DESCENT 0
+ENDPROPERTIES
+CHARS 7
+STARTCHAR testfiles/01-warning.gif-#000000
+ENCODING 65
+SWIDTH 500 0
+DWIDTH 16 0
+BBX 16 16 0 0
+BITMAP
+07e0
+1ff8
+3efc
+7e7e
+7e7e
+fe7f
+fe7f
+fe7f
+fe7f
+fe7f
+feff
+7ffe
+7ffe
+3e7c
+1e78
+07e0
+ENDCHAR
+STARTCHAR testfiles/02-3d.gif-#000000
+ENCODING 66
+SWIDTH 500 0
+DWIDTH 16 0
+BBX 16 16 0 0
+BITMAP
+8c20
+c610
+e308
+7184
+38c2
+9c61
+ce30
+e718
+f38c
+79c6
+bce3
+de71
+ef38
+f79c
+fbce
+fde7
+ENDCHAR
+STARTCHAR testfiles/03-pyramid.gif-#000000
+ENCODING 67
+SWIDTH 500 0
+DWIDTH 16 0
+BBX 8 16 0 0
+BITMAP
+80
+c0
+e0
+f0
+f8
+fc
+fe
+ff
+ff
+fe
+fc
+f8
+f0
+e0
+c0
+80
+ENDCHAR
+STARTCHAR testfiles/04-pyramid-color.gif-#000000
+ENCODING 68
+SWIDTH 500 0
+DWIDTH 16 0
+BBX 8 16 0 0
+BITMAP
+80
+c0
+e0
+f0
+f8
+fc
+fe
+ff
+ff
+fe
+fc
+f8
+f0
+e0
+c0
+80
+ENDCHAR
+STARTCHAR testfiles/04-pyramid-color.gif-#0086cf
+ENCODING 69
+SWIDTH 500 0
+DWIDTH 16 0
+BBX 8 16 0 0
+BITMAP
+01
+03
+07
+0f
+1f
+3f
+7f
+ff
+ff
+7f
+3f
+1f
+0f
+07
+03
+01
+ENDCHAR
+STARTCHAR testfiles/04-pyramid-color.gif-#339f52
+ENCODING 70
+SWIDTH 500 0
+DWIDTH 16 0
+BBX 14 7 1 0
+BITMAP
+0300
+0780
+0fc0
+1fe0
+3ff0
+7ff8
+fffc
+ENDCHAR
+STARTCHAR testfiles/04-pyramid-color.gif-#cf0000
+ENCODING 71
+SWIDTH 500 0
+DWIDTH 16 0
+BBX 14 7 1 9
+BITMAP
+fffc
+7ff8
+3ff0
+1fe0
+0fc0
+0780
+0300
+0000
+0000
+0000
+0000
+0000
+0000
+0000
+0000
+0000
+ENDCHAR
+ENDFONT
