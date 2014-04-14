@@ -108,7 +108,6 @@ def findboundbits(value, length):
     if (value & 1) == 1:
       off = length - x
       if bits[1] == 0:
-        print "Low bit %s" % off
         bits[1] = off
       bits[0] = off
     x += 1
@@ -158,7 +157,6 @@ class Glyph:
     return r
 
   def processData(self, data):
-    print data
     for a in range(len(data)):
       row = data[a]
       rint = 0
@@ -170,14 +168,11 @@ class Glyph:
           rint = row >> (self.pad * -1)
         # Determine minx and maxx
         (minx, maxx) = findboundbits(rint, self.size * 8)
-        print minx, maxx
         if minx < self.minx: self.minx = minx
         if maxx > self.maxx: self.maxx = maxx
         #update miny/maxy
         if self.maxy == 0: 
           self.maxy = len(data) - a - 1
-        else:
-          print self.maxy
         self.miny = len(data) - a - 1
       if self.maxy > 0: 
         self.rows.append(rint) 
@@ -190,7 +185,7 @@ class Glyph:
       self.minx = self.size * 8
       self.maxy = 0
       self.miny = self.glyphheight
-      logging.error("Reprocessing due to small width, shifting %s bits right." % (-1 * self.pad))
+      logging.info("Reprocessing due to small width, shifting %s bits right." % (-1 * self.pad))
       self.processData(data)
     # Reshift to bounding edge
     nrows = []
@@ -254,7 +249,6 @@ class ImageFile:
       if color[1][3] >= self.alpha:
         c = self.t2h(color[1])
         if c[1:] != self.mask:
-          print c[1:], self.mask
           self.colors[c] = [0] * self.image.size[0]
       else:
         print "Unsupported Alpha color: %s" % (color, )
@@ -306,13 +300,11 @@ if __name__ == '__main__':
   parser.set_defaults(binary=False)
   args = vars(parser.parse_args())
   
-  #files = sys.argv[1:]
-  idx = args['index']
+  idx = args['start']
   w = args['width']
   h = args['height']
-  print w, h
   glyphs = []
-  f = Font(fontname='UserFont', index=args['index'], width=w, height=h)
+  f = Font(fontname='UserFont', index=args['start'], width=w, height=h)
 
   if len(args['files']) > 0:
     for file in args['files']:
@@ -322,8 +314,11 @@ if __name__ == '__main__':
         f.addGlyph(g)
 
   if args['bdf']:
+    print "Writing BDF font file..."
     outfile = open('%s.bdf' % args['name'], 'w')
     outfile.write(f.getBDFstr())
   if args['u8glib']:
+    print "Writing u8glib font file..."
     u8gfile = open('%s.u8g' % args['name'],'w')
     u8gfile.write(f.getu8glibstr())
+  print "Done."
