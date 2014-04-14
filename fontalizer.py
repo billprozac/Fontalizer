@@ -101,7 +101,6 @@ class Font:
 
 
 def findboundbits(value, length):
-  logging.error("Finding bounds for %s value %s" % (length, value))
   x = 0
   bits = [0,0]
   length -= 1
@@ -159,7 +158,6 @@ class Glyph:
     return r
 
   def processData(self, data):
-    logging.error("Height: %s" % len(data))
     print data
     for a in range(len(data)):
       row = data[a]
@@ -170,14 +168,12 @@ class Glyph:
           rint = row << self.pad
         else:
           rint = row >> (self.pad * -1)
-          logging.error("%s shifts to %s" % (row, rint))
         # Determine minx and maxx
         (minx, maxx) = findboundbits(rint, self.size * 8)
         print minx, maxx
         if minx < self.minx: self.minx = minx
         if maxx > self.maxx: self.maxx = maxx
         #update miny/maxy
-        logging.error("Maxy: %s, Len: %s, A: %s, RINT: %s" % (self.maxy, len(data), a, rint))
         if self.maxy == 0: 
           self.maxy = len(data) - a - 1
         else:
@@ -194,7 +190,7 @@ class Glyph:
       self.minx = self.size * 8
       self.maxy = 0
       self.miny = self.glyphheight
-      logging.error("Reprocessing due to small width, shifting %s" % (-1 * self.pad))
+      logging.error("Reprocessing due to small width, shifting %s bits right." % (-1 * self.pad))
       self.processData(data)
     # Reshift to bounding edge
     nrows = []
@@ -202,9 +198,6 @@ class Glyph:
       nrows.append(row << self.minx)
     self.rows = nrows
     self.height = self.maxy - self.miny + 1
-    logging.error("MaxX: %s, MinX: %s" % (self.maxx, self.minx))
-    logging.error("MaxY: %s, MinY: %s" % (self.maxy, self.miny))
-    logging.error("width: %s, height: %s" % (self.width, self.height))
 
   def getBBX(self):
     return (self.width, self.height, self.minx, self.miny)
